@@ -1,16 +1,18 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/auth");
 const useCtrl = require("../controllers/user");
 const profilCtrl = require("../controllers/profil");
+const multer = require("../middleware/multer-config");
 
 //Routes de connexion et de déconnexion
 router.post("/signup", useCtrl.signup);
 router.post("/login", useCtrl.login);
 
 //Route profil utilisateurs
-router.get("/", profilCtrl.getAllUsers);
-router.get("/:id", profilCtrl.userInfo);
-// router.put("/:id", profilCtrl.updateUser);
-// router.delete("/:id", profilCtrl.deleteUser);
+router.get("/", auth, profilCtrl.getAllUsers);
+router.get("/:id", auth, profilCtrl.userInfo);
+router.put("/:id", auth, multer, profilCtrl.updateUser);
+router.delete("/:id", auth, multer, profilCtrl.deleteUser);
 
 module.exports = router;

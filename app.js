@@ -1,8 +1,10 @@
 const express = require("express");
 const db = require("./database");
 const helmet = require("helmet");
+const path = require("path");
 
 const userRoutes = require("./routes/user.routes");
+const messageRoutes = require("./routes/message.routes");
 
 const app = express();
 
@@ -34,7 +36,11 @@ app.use((req, res, next) => {
   next();
 });
 
-//Routes
+//Routes Users
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/user", userRoutes);
+
+//Routes messages
+app.use("/api/message", messageRoutes);
 
 module.exports = app;

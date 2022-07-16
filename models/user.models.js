@@ -6,64 +6,21 @@ const User = db.define(
   {
     id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
     name: { type: Sequelize.STRING(255), allowNull: false },
+    firstname: { type: Sequelize.STRING(100), allowNull: false },
     email: { type: Sequelize.STRING(255), allowNull: false, unique: true },
+    service: { type: Sequelize.STRING(255), allowNull: false },
+    media: {
+      type: Sequelize.STRING(255),
+      defaultValue: "/images/defaut/imagedefaut.png",
+    },
     password: { type: Sequelize.STRING(255), allowNull: false },
+    isAdmin: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
+    isActive: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true },
   },
-  { tableName: "users", timestamps: false, underscored: true }
+  { tableName: "users", timestamps: true, underscored: true }
 );
 
 db.authenticate();
+User.sync({ alter: true });
 
 exports.User = User;
-
-// const User = db.define("users", {
-//   id: {
-//     type: DataTypes.INTEGER(11).UNSIGNED,
-//     primaryKey: true,
-//     autoIncrement: true,
-//   },
-//   name: {
-//     type: DataTypes.STRING(100),
-//     defaultValue: "",
-//     allowNull: false,
-//   },
-//   firstname: {
-//     type: DataTypes.STRING(100),
-//     defaultValue: "",
-//     allowNull: false,
-//   },
-//   email: {
-//     type: DataTypes.STRING,
-//     validate: {
-//       isEmail: true,
-//     },
-//   },
-//   password: {
-//     type: DataTypes.STRING(64),
-//     allowNull: false,
-//   },
-// });
-
-// module.exports = User;
-
-// const mongoose = require("mongoose");
-// const uniqueValidator = require("mongoose-unique-validator");
-// const { isEmail } = require("validator");
-
-// const userSchema = mongoose.Schema(
-//   {
-//     name: { type: String, required: true },
-//     firstname: { type: String, required: true },
-//     email: { type: String, required: true, unique: true, validate: [isEmail] },
-//     password: { type: String, required: true },
-//     followers: { type: [String] },
-//     following: { type: [String] },
-//     likes: { type: [String] },
-//     picture: { type: String, default: "" },
-//   },
-//   { timestamps: true }
-// );
-
-// userSchema.plugin(uniqueValidator);
-
-// module.exports = mongoose.model("User", userSchema);
