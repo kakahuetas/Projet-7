@@ -14,8 +14,11 @@ const User = db.define(
       defaultValue: "/images/defaut/imagedefaut.png",
     },
     password: { type: Sequelize.STRING(255), allowNull: false },
-    isAdmin: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
-    isActive: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true },
+    isAdmin: { type: Sequelize.BOOLEAN, defaultValue: false },
+    isActive: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
   },
   { tableName: "users", timestamps: true, underscored: true }
 );

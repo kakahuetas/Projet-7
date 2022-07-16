@@ -13,7 +13,9 @@ exports.getAllUsers = async (req, res, next) => {
       "service",
       "createdAt",
       "media",
+      "isAdmin",
     ],
+    where: { id: req.auth.userId },
   })
     .then((user) => {
       res.status(200).send(user);
@@ -38,6 +40,7 @@ exports.userInfo = async (req, res, next) => {
         "service",
         "createdAt",
         "media",
+        "isAdmin",
       ],
       where: { id: req.params.id },
     })

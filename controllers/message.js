@@ -1,4 +1,5 @@
 const MessageModel = require("../models/message.model");
+const UserModel = require("../models/user.models");
 const fs = require("fs");
 
 // Création d'un message
@@ -127,29 +128,41 @@ exports.deleteMessage = async (req, res, next) => {
     return res
       .status(404)
       .send({ message: "Le message n'a pas été trouvé ou déjà supprimé" });
-  MessageModel.Message.findOne({ where: { id: req.params.id } })
-    .then((thisMessage) => {
-      if (thisMessage.author != user) {
-        res.status(401).json({ message: "Non Autorisé" });
-      } else if (thisMessage.media != null) {
-        const filename = thisMessage.media.split("/images/upload/")[1];
-        fs.unlink(`images/upload/${filename}`, () => {
-          message
-            .destroy({ where: { id: req.params.id } })
-            .then(() => {
-              res.status(200).json({ message: "Message supprimé" });
-            })
-            .catch((error) => res.status(501).json({ message: error }));
-        });
-      } else {
-        message
-          .destroy({ where: { id: req.params.id } })
-          .then(() => {
-            res.status(200).json({ message: "Message supprimé" });
-          })
-          .catch((error) => res.status(501).json({ message: error }));
+
+  UserModel.User.findOne({ where: { id: req.auth.userId } })
+    .then((users) => {
+      if (!users) {
+        return res.status(401).json({ message: "pas utilisateur" });
       }
+      MessageModel.Message.findOne({ where: { id: req.params.id } }).then(
+        (thisMessage) => {
+          if (
+            thisMessage.author === user ||
+            (users.isAdmin === true && thisMessage.media != null)
+          ) {
+            const filename = thisMessage.media.split("/images/upload/")[1];
+            fs.unlink(`images/upload/${filename}`, () => {
+              message
+                .destroy({ where: { id: req.params.id } })
+                .then(() => {
+                  res.status(200).json({ message: "Message supprimé" });
+                })
+                .catch((error) => res.status(501).json({ message: error }));
+            });
+          } else if (thisMessage.author === user || users.isAdmin === true) {
+            message
+              .destroy({ where: { id: req.params.id } })
+              .then(() => {
+                res.status(200).json({ message: "Message supprimé" });
+              })
+              .catch((error) => res.status(501).json({ message: error }));
+          } else {
+            res.status(401).json({ message: "Non Autorisé" });
+          }
+        }
+      );
     })
+
     .catch((error) => {
       res.status(500).json({ error });
     });
@@ -166,3 +179,7 @@ exports.likeMessage = async (req, res, next) => {
     res.status(200).json({ message: "Message trouvé" });
   }
 };
+
+////TO DO : Finir la partir admin pour : Suppression des comptes utilisateurs
+/////////// ajouter systeme de commentaire
+/////////// Ajouter systeme de like et dislike

@@ -44,16 +44,45 @@ exports.login = (req, res, next) => {
         .then((valid) => {
           if (!valid) {
             return res.status(401).json({ error: "Mot de passe incorrect !" });
+          } else {
+            user
+              .update({ isActive: true }, { where: { id: req.body.email } })
+              .then(() =>
+                res.status(200).json({
+                  message: "Vous êtes connecté",
+                  userId: user.id,
+                  token: jwt.sign({ userId: user.id }, "RANDOM_TOKEN_SECRET", {
+                    expiresIn: "24h",
+                  }),
+                })
+              );
           }
-          res.status(200).json({
-            message: "Vous êtes connecté",
-            userId: user.id,
-            token: jwt.sign({ userId: user.id }, "RANDOM_TOKEN_SECRET", {
-              expiresIn: "24h",
-            }),
-          });
         })
         .catch((error) => res.status(500).json({ error }));
+    })
+    .catch((error) => res.status(500).json({ error }));
+};
+
+//Deconnexion
+exports.logoutUser = (req, res, next) => {
+  UserModel.User.findOne({
+    where: { email: req.body.email },
+  })
+    .then((user) => {
+      if (!user) {
+        return res
+          .status(401)
+          .json({ message: "Merci de vous authentifier", error });
+      } else {
+        user
+          .update({ isActive: false }, { where: { id: req.body.email } })
+          .then(() =>
+            res.status(201).json({
+              message: "utilisateur déconnecté ",
+            })
+          )
+          .catch((error) => res.status(400).json({ error }));
+      }
     })
     .catch((error) => res.status(500).json({ error }));
 };
