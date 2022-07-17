@@ -178,13 +178,13 @@ exports.likeMessage = async (req, res, next) => {
   LikesModel.Likes.findAll({ where: { userId, postId } })
     .then(async (likes) => {
       if (likes.length) {
-        throw "Post déjà liké 😆";
+        throw "Post déjà liké 🤚";
       }
       await LikesModel.Likes.create({
         userId,
         postId,
       });
-      return res.status(201).json({ message: "Like crée ! 😆" });
+      return res.status(201).json({ message: "Like crée ! 👍" });
     })
     .catch((error) => res.status(400).json({ error }));
 
@@ -195,5 +195,22 @@ exports.likeMessage = async (req, res, next) => {
   console.log(count);
 };
 
+exports.unlikeMessage = async (req, res) => {
+  const postId = req.params.id;
+  const userId = req.auth.userId;
+  LikesModel.Likes.findAll({ where: { userId, postId } })
+    .then((likes) => {
+      if (!likes.length) {
+        throw "Post non liké 😥";
+      }
+
+      const likesIds = likes.map((like) => like.id);
+      console.log(likesIds);
+      LikesModel.Likes.destroy({ where: { id: likesIds } }).then(() =>
+        res.status(201).json({ message: "Like annulé ! 👎" })
+      );
+    })
+    .catch((error) => res.status(400).json({ error }));
+};
 ////TO DO :
 /////////// ajouter systeme de commentaire
