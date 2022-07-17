@@ -173,94 +173,27 @@ exports.deleteMessage = async (req, res, next) => {
 
 //Like Message
 exports.likeMessage = async (req, res, next) => {
-  const userId = req.auth.userId + "";
-  const post = await MessageModel.Message.findByPk(req.params.id);
-
-  LikesModel.Likes.findOne({ where: { id: req.params.id } }).then(
-    (userLiked) => {
-      if (!post) {
-        return res
-          .status(404)
-          .send({ message: "Le message n'a pas été trouvé ou supprimé" });
-      } else {
-        MessageModel.Message.findOne({ where: { id: req.params.id } }).then(
-          (thisMessage) => {
-            const newValues = {
-              postId: req.params.id,
-              userId: userId,
-            };
-            if (req.auth.userId) {
-              LikesModel.Likes.create(newValues, {
-                where: { id: req.params.id },
-              });
-              return res.status(404).json({ message: "Cas 2 : post liké" });
-            } else if (
-              userLiked.postId === req.params.id &&
-              userLiked.userId === userId
-            ) {
-              return res
-                .status(404)
-                .json({ message: "Cas 1 : post déjà liké" });
-            }
-            // Calcul du nombre de likes
-            newValues.likes = newValues.usersLiked.length;
-          }
-        );
+  const postId = req.params.id;
+  const userId = req.auth.userId;
+  LikesModel.Likes.findAll({ where: { userId, postId } })
+    .then(async (likes) => {
+      if (likes.length) {
+        throw "Post déjà liké 😆";
       }
-    }
-  );
+      await LikesModel.Likes.create({
+        userId,
+        postId,
+      });
+      return res.status(201).json({ message: "Like crée ! 😆" });
+    })
+    .catch((error) => res.status(400).json({ error }));
+
+  //Affichage du total de like en fonction du message
+  const count = await LikesModel.Likes.count({
+    where: { postId: postId },
+  });
+  console.log(count);
 };
 
-// exports.likeMessage = async (req, res, next) => {
-//   MessageModel.Message.findOne({ where: { id: req.params.id } })
-//     .then((post) => {
-//       let likes = post.likes;
-//       let usersLiked = post.usersLiked;
-//       let userId = req.body.id;
-//       if (usersLiked) {
-//         const found = usersLiked.find((p) => p == userId);
-//         if (found) {
-//           likes--;
-//           let userKey = usersLiked.indexOf(userId);
-//           usersLiked.splice(userKey, 1);
-//         } else {
-//           likes++;
-//           usersLiked.push(req.body.id);
-//         }
-//         postObject = { ...post, likes, usersLiked };
-//       } else {
-//         usersLiked = [];
-//         likes++;
-//         usersLiked.push(req.body.id);
-//         postObject = { ...post, likes, usersLiked };
-//       }
-//       MessageModel.Message.update(
-//         { ...postObject, id: req.params.id },
-//         { where: { id: req.params.id } }
-//       )
-//         .then(() => {
-//           res.status(200).json({ likes, usersLiked });
-//         })
-//         .catch((error) => {
-//           res.status(400).json({ error });
-//         });
-//     })
-//     .catch((error) => {
-//       res.status(404).json({ error });
-//     });
-// };
-
-//Unlike Message
-exports.unlikeMessage = async (req, res, next) => {
-  const post = await MessageModel.Message.findByPk(req.params.id);
-  if (!post)
-    return res
-      .status(404)
-      .send({ message: "Le message n'a pas été trouvé ou supprimé" });
-  else {
-    res.status(200).json({ message: "Message trouvé" });
-  }
-};
 ////TO DO :
 /////////// ajouter systeme de commentaire
-/////////// Ajouter systeme de like et dislike

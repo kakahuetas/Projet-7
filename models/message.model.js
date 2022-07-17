@@ -12,6 +12,11 @@ const Message = db.define(
   { tableName: "messages", timestamps: true, underscored: true }
 );
 
+Message.associate = function (models) {
+  // define associations
+  Message.belongsTo(models.User);
+};
+
 db.authenticate();
 Message.sync({ alter: true });
 

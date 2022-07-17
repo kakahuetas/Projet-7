@@ -12,12 +12,11 @@ const Likes = db.define(
     },
     postId: {
       type: Sequelize.INTEGER,
+      allowNull: true,
       references: {
         model: "Messages",
         key: "id",
       },
-      onUpdate: "cascade",
-      onDelete: "cascade",
     },
     userId: {
       type: Sequelize.INTEGER,
@@ -25,12 +24,20 @@ const Likes = db.define(
         model: "Users",
         key: "id",
       },
-      onUpdate: "cascade",
-      onDelete: "cascade",
     },
   },
   { tableName: "Likes", timestamps: true, underscored: true }
 );
+
+Likes.associate = function (models) {
+  // define association
+  Likes.belongsTo(models.Users, {
+    foreignKey: "userId",
+  });
+  Likes.belongsTo(models.Message, {
+    foreignKey: "postId",
+  });
+};
 
 db.authenticate();
 Likes.sync({ alter: true });
