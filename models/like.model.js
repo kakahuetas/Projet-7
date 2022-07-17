@@ -10,7 +10,7 @@ const Likes = db.define(
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    PostId: {
+    postId: {
       type: Sequelize.INTEGER,
       references: {
         model: "Messages",
@@ -22,7 +22,7 @@ const Likes = db.define(
     userId: {
       type: Sequelize.INTEGER,
       references: {
-        model: "User",
+        model: "Users",
         key: "id",
       },
       onUpdate: "cascade",

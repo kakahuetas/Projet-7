@@ -13,7 +13,8 @@ router.post("/", auth, multer, messageCtrl.createMessage);
 router.put("/:id", auth, multer, messageCtrl.editMessage);
 router.delete("/:id", auth, multer, messageCtrl.deleteMessage);
 
-//Like/Dislike
-router.patch("/:id/like", auth, messageCtrl.likeMessage);
+//Like/Unlike
+router.post("/like/:id", auth, messageCtrl.likeMessage);
+router.post("/unlike/:id", auth, messageCtrl.unlikeMessage);
 
 module.exports = router;

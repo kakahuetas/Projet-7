@@ -1,23 +1,22 @@
 const MessageModel = require("../models/message.model");
 const UserModel = require("../models/user.models");
+const LikesModel = require("../models/like.model");
 const fs = require("fs");
 
 // Création d'un message
 exports.createMessage = (req, res, next) => {
-  if (!req.body.title || !req.body.texte)
+  if (!req.body.texte)
     return res
       .status(404)
       .send({ message: "Merci de ne pas laisser les champs vides" });
   else if (req.file != undefined) {
     MessageModel.Message.create(
       {
-        author: req.auth.userId,
-        title: req.body.title,
+        userId: req.auth.userId,
         texte: req.body.texte,
         media: `${req.protocol}://${req.get("host")}/images/upload/${
           req.file.filename
         }`,
-        likes: 0,
       },
       { where: { id: req.auth.userId } }
     )
@@ -28,10 +27,8 @@ exports.createMessage = (req, res, next) => {
   } else {
     MessageModel.Message.create(
       {
-        author: req.auth.userId,
-        title: req.body.title,
+        userId: req.auth.userId,
         texte: req.body.texte,
-        likes: 0,
       },
       { where: { id: req.auth.userId } }
     )
@@ -45,7 +42,7 @@ exports.createMessage = (req, res, next) => {
 //Recupération de tous les messages
 exports.getAllMessages = async (req, res, next) => {
   MessageModel.Message.findAll({
-    attributes: ["id", "author", "title", "texte", "media"],
+    attributes: ["id", "userId", "texte", "likes", "media", "createdAt"],
   })
     .then((message) => {
       res.status(200).send(message);
@@ -62,7 +59,7 @@ exports.getOneMessage = async (req, res, next) => {
       .send({ message: "Le message n'a pas été trouvé ou supprimé" });
   else {
     MessageModel.Message.findOne({
-      attributes: ["id", "author", "title", "texte", "media", "createdAt"],
+      attributes: ["id", "userId", "texte", "media", "likes", "createdAt"],
       where: { id: req.params.id },
     })
       .then((message) => {
@@ -86,12 +83,11 @@ exports.editMessage = async (req, res, next) => {
     MessageModel.Message.findOne({ where: { id: req.params.id } })
       .then((ThisMessage) => {
         if (
-          (ThisMessage.author === user && req.file != undefined) ||
+          (ThisMessage.userId === user && req.file != undefined) ||
           (users.isAdmin === true && req.file != undefined)
         ) {
           MessageModel.Message.update(
             {
-              title: req.body.title,
               texte: req.body.texte,
               media: `${req.protocol}://${req.get("host")}/images/upload/${
                 req.file.filename
@@ -105,10 +101,9 @@ exports.editMessage = async (req, res, next) => {
             .catch(() => {
               res.status(401).json({ message: "Non Autorisé" });
             });
-        } else if (ThisMessage.author === user || users.isAdmin === true) {
+        } else if (ThisMessage.userId === user || users.isAdmin === true) {
           MessageModel.Message.update(
             {
-              title: req.body.title,
               texte: req.body.texte,
             },
             { where: { id: req.params.id } }
@@ -178,6 +173,85 @@ exports.deleteMessage = async (req, res, next) => {
 
 //Like Message
 exports.likeMessage = async (req, res, next) => {
+  const userId = req.auth.userId + "";
+  const post = await MessageModel.Message.findByPk(req.params.id);
+
+  LikesModel.Likes.findOne({ where: { id: req.params.id } }).then(
+    (userLiked) => {
+      if (!post) {
+        return res
+          .status(404)
+          .send({ message: "Le message n'a pas été trouvé ou supprimé" });
+      } else {
+        MessageModel.Message.findOne({ where: { id: req.params.id } }).then(
+          (thisMessage) => {
+            const newValues = {
+              postId: req.params.id,
+              userId: userId,
+            };
+            if (req.auth.userId) {
+              LikesModel.Likes.create(newValues, {
+                where: { id: req.params.id },
+              });
+              return res.status(404).json({ message: "Cas 2 : post liké" });
+            } else if (
+              userLiked.postId === req.params.id &&
+              userLiked.userId === userId
+            ) {
+              return res
+                .status(404)
+                .json({ message: "Cas 1 : post déjà liké" });
+            }
+            // Calcul du nombre de likes
+            newValues.likes = newValues.usersLiked.length;
+          }
+        );
+      }
+    }
+  );
+};
+
+// exports.likeMessage = async (req, res, next) => {
+//   MessageModel.Message.findOne({ where: { id: req.params.id } })
+//     .then((post) => {
+//       let likes = post.likes;
+//       let usersLiked = post.usersLiked;
+//       let userId = req.body.id;
+//       if (usersLiked) {
+//         const found = usersLiked.find((p) => p == userId);
+//         if (found) {
+//           likes--;
+//           let userKey = usersLiked.indexOf(userId);
+//           usersLiked.splice(userKey, 1);
+//         } else {
+//           likes++;
+//           usersLiked.push(req.body.id);
+//         }
+//         postObject = { ...post, likes, usersLiked };
+//       } else {
+//         usersLiked = [];
+//         likes++;
+//         usersLiked.push(req.body.id);
+//         postObject = { ...post, likes, usersLiked };
+//       }
+//       MessageModel.Message.update(
+//         { ...postObject, id: req.params.id },
+//         { where: { id: req.params.id } }
+//       )
+//         .then(() => {
+//           res.status(200).json({ likes, usersLiked });
+//         })
+//         .catch((error) => {
+//           res.status(400).json({ error });
+//         });
+//     })
+//     .catch((error) => {
+//       res.status(404).json({ error });
+//     });
+// };
+
+//Unlike Message
+exports.unlikeMessage = async (req, res, next) => {
   const post = await MessageModel.Message.findByPk(req.params.id);
   if (!post)
     return res
@@ -187,7 +261,6 @@ exports.likeMessage = async (req, res, next) => {
     res.status(200).json({ message: "Message trouvé" });
   }
 };
-
 ////TO DO :
 /////////// ajouter systeme de commentaire
 /////////// Ajouter systeme de like et dislike

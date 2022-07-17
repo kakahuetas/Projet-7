@@ -7,7 +7,7 @@ const User = db.define(
     id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
     name: { type: Sequelize.STRING(255), allowNull: false },
     firstname: { type: Sequelize.STRING(100), allowNull: false },
-    email: { type: Sequelize.STRING(255), allowNull: false, unique: true },
+    email: { type: Sequelize.STRING(255), allowNull: false, unique: "email" },
     service: { type: Sequelize.STRING(255), allowNull: false },
     media: {
       type: Sequelize.STRING(255),
