@@ -77,46 +77,54 @@ exports.editMessage = async (req, res, next) => {
   const user = req.auth.userId + "";
   const message = await MessageModel.Message.findByPk(req.params.id);
 
-  if (!message)
-    return res
-      .status(404)
-      .send({ message: "Le message n'a pas été trouvé ou supprimé" });
-  MessageModel.Message.findOne({ where: { id: req.params.id } })
-    .then((ThisMessage) => {
-      if (ThisMessage.author != user) {
-        res.status(401).json({ message: "Non Autorisé" });
-      } else if (req.file != undefined) {
-        MessageModel.Message.update(
-          {
-            title: req.body.title,
-            texte: req.body.texte,
-            media: `${req.protocol}://${req.get("host")}/images/upload/${
-              req.file.filename
-            }`,
-          },
-          { where: { id: req.params.id } }
-        )
-          .then(() => {
-            res.status(200).json({ message: "Message modifié" });
-          })
-          .catch((error) => res.status(501).json({ message: error }));
-      } else {
-        MessageModel.Message.update(
-          {
-            title: req.body.title,
-            texte: req.body.texte,
-          },
-          { where: { id: req.params.id } }
-        )
-          .then(() => {
-            res.status(200).json({ message: "Message modifié" });
-          })
-          .catch((error) => res.status(501).json({ message: error }));
-      }
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
+  UserModel.User.findOne({ where: { id: req.auth.userId } }).then((users) => {
+    if (!message)
+      return res
+        .status(404)
+        .send({ message: "Le message n'a pas été trouvé ou supprimé" });
+
+    MessageModel.Message.findOne({ where: { id: req.params.id } })
+      .then((ThisMessage) => {
+        if (
+          (ThisMessage.author === user && req.file != undefined) ||
+          (users.isAdmin === true && req.file != undefined)
+        ) {
+          MessageModel.Message.update(
+            {
+              title: req.body.title,
+              texte: req.body.texte,
+              media: `${req.protocol}://${req.get("host")}/images/upload/${
+                req.file.filename
+              }`,
+            },
+            { where: { id: req.params.id } }
+          )
+            .then(() => {
+              res.status(200).json({ message: "Message modifié" });
+            })
+            .catch(() => {
+              res.status(401).json({ message: "Non Autorisé" });
+            });
+        } else if (ThisMessage.author === user || users.isAdmin === true) {
+          MessageModel.Message.update(
+            {
+              title: req.body.title,
+              texte: req.body.texte,
+            },
+            { where: { id: req.params.id } }
+          )
+            .then(() => {
+              res.status(200).json({ message: "Message modifié" });
+            })
+            .catch((error) => res.status(501).json({ message: error }));
+        } else {
+          res.status(401).json({ message: "Non Autorisé" });
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({ error });
+      });
+  });
 };
 
 //Suppréssion du message
@@ -180,6 +188,6 @@ exports.likeMessage = async (req, res, next) => {
   }
 };
 
-////TO DO : Finir la partir admin pour : Suppression des comptes utilisateurs
+////TO DO :
 /////////// ajouter systeme de commentaire
 /////////// Ajouter systeme de like et dislike

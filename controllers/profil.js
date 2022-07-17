@@ -53,64 +53,80 @@ exports.userInfo = async (req, res, next) => {
 
 //Update un profil
 exports.updateUser = async (req, res, next) => {
-  const user = req.auth.userId;
-  if (user != req.params.id)
-    return res.status(404).send({ message: "Non authorisé" });
-  else if (req.file != undefined) {
-    bcrypt.hash(req.body.password, 10).then((hash) => {
-      UserModel.User.update(
-        {
-          name: req.body.name,
-          firstname: req.body.firstname,
-          email: req.body.email,
-          service: req.body.service,
-          password: hash,
-          media: `${req.protocol}://${req.get("host")}/images/upload/${
-            req.file.filename
-          }`,
-        },
-        { where: { id: req.auth.userId } }
-      )
-        .then(() => {
-          res.status(200).json({ message: "Profil modifié" });
-        })
-        .catch((error) => res.status(501).json({ message: error }));
-    });
-  } else {
-    bcrypt.hash(req.body.password, 10).then((hash) => {
-      UserModel.User.update(
-        {
-          name: req.body.name,
-          firstname: req.body.firstname,
-          email: req.body.email,
-          service: req.body.service,
-          password: hash,
-        },
-        { where: { id: req.auth.userId } }
-      )
-        .then(() => {
-          res.status(200).json({ message: "Profil modifié" });
-        })
-        .catch((error) => res.status(501).json({ message: error }));
-    });
-  }
+  const user = req.auth.userId + "";
+
+  UserModel.User.findOne({ where: { id: req.auth.userId } }).then((users) => {
+    console.log(req.params.id, user, users.isAdmin);
+    if (
+      (user === req.params.id && req.file != undefined) ||
+      (users.isAdmin === true && req.file != undefined)
+    ) {
+      bcrypt.hash(req.body.password, 10).then((hash) => {
+        UserModel.User.update(
+          {
+            name: req.body.name,
+            firstname: req.body.firstname,
+            email: req.body.email,
+            service: req.body.service,
+            password: hash,
+            media: `${req.protocol}://${req.get("host")}/images/upload/${
+              req.file.filename
+            }`,
+          },
+          { where: { id: req.params.id } }
+        )
+          .then(() => {
+            res.status(200).json({ message: "Profil modifié" });
+          })
+          .catch((error) => res.status(501).json({ message: error }));
+      });
+    } else if (
+      (user === req.params.id && req.file === undefined) ||
+      (users.isAdmin === true && req.file === undefined)
+    ) {
+      bcrypt.hash(req.body.password, 10).then((hash) => {
+        UserModel.User.update(
+          {
+            name: req.body.name,
+            firstname: req.body.firstname,
+            email: req.body.email,
+            service: req.body.service,
+            password: hash,
+          },
+          { where: { id: req.params.id } }
+        )
+          .then(() => {
+            res.status(200).json({ message: "Profil modifié" });
+          })
+          .catch((error) => res.status(501).json({ message: error }));
+      });
+    } else {
+      return res.status(404).send({ message: "Non authorisé" });
+    }
+  });
 };
 
 //Supprimer un profil
 exports.deleteUser = (req, res, next) => {
-  const user = req.auth.userId;
-  UserModel.User.findOne({ where: { id: req.params.id } }).then((profil) => {
-    if (user != req.params.id)
-      return res.status(404).send({ message: "Non authorisé" });
-    else {
-      const filename = profil.media.split("/images/upload/")[1];
-      fs.unlink(`images/upload/${filename}`, () => {
-        UserModel.User.destroy({ where: { id: req.auth.userId } })
-          .then(() => {
-            res.status(200).json({ message: "Profil supprimé" });
-          })
-          .catch((error) => res.status(501).json({ message: error }));
-      });
+  const user = req.auth.userId + "";
+  const selectedUser = req.params.id;
+
+  UserModel.User.findOne({ where: { id: req.auth.userId } }).then((users) => {
+    if (user === selectedUser || users.isAdmin === true) {
+      UserModel.User.findOne({ where: { id: req.params.id } }).then(
+        (profil) => {
+          const filename = profil.media.split("/images/upload/")[1];
+          fs.unlink(`images/upload/${filename}`, () => {
+            UserModel.User.destroy({ where: { id: req.params.id } })
+              .then(() => {
+                res.status(200).json({ message: "Profil supprimé" });
+              })
+              .catch((error) => res.status(501).json({ message: error }));
+          });
+        }
+      );
+    } else {
+      return res.status(404).send({ message: "Non autorisé" });
     }
   });
 };
