@@ -31,7 +31,7 @@ const Likes = db.define(
 
 Likes.associate = function (models) {
   // define association
-  Likes.belongsTo(models.Users, {
+  Likes.belongsTo(models.User, {
     foreignKey: "userId",
   });
   Likes.belongsTo(models.Message, {

@@ -5,7 +5,13 @@ const Message = db.define(
   "Messages",
   {
     id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-    userId: { type: Sequelize.STRING, allowNull: false },
+    userId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: "Users",
+        key: "id",
+      },
+    },
     texte: { type: Sequelize.TEXT, allowNull: false },
     media: { type: Sequelize.STRING, allowNull: true },
   },
@@ -13,8 +19,10 @@ const Message = db.define(
 );
 
 Message.associate = function (models) {
-  // define associations
-  Message.belongsTo(models.User);
+  // define association
+  Message.belongsTo(models.User, {
+    foreignKey: "userId",
+  });
 };
 
 db.authenticate();

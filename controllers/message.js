@@ -140,7 +140,7 @@ exports.deleteMessage = async (req, res, next) => {
       MessageModel.Message.findOne({ where: { id: req.params.id } }).then(
         (thisMessage) => {
           if (
-            thisMessage.author === user ||
+            thisMessage.userId === user ||
             (users.isAdmin === true && thisMessage.media != null)
           ) {
             const filename = thisMessage.media.split("/images/upload/")[1];
@@ -152,7 +152,7 @@ exports.deleteMessage = async (req, res, next) => {
                 })
                 .catch((error) => res.status(501).json({ message: error }));
             });
-          } else if (thisMessage.author === user || users.isAdmin === true) {
+          } else if (thisMessage.userId === user || users.isAdmin === true) {
             message
               .destroy({ where: { id: req.params.id } })
               .then(() => {

@@ -5,6 +5,7 @@ const path = require("path");
 
 const userRoutes = require("./routes/user.routes");
 const messageRoutes = require("./routes/message.routes");
+const commentRoutes = require("./routes/comment.routes");
 
 const app = express();
 
@@ -42,5 +43,8 @@ app.use("/api/user", userRoutes);
 
 //Routes messages
 app.use("/api/message", messageRoutes);
+
+//Routes commentaires
+app.use("/api/message/comment", commentRoutes);
 
 module.exports = app;
