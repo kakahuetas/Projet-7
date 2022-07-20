@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+
+:root {
+  $primaryColor: #fd2d01;
+  $secondaryColor: #ffd7d7;
+  $tertiaireColor: #4e5166;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: 0;
+}
+
+body {
+  background: #ffd7d7;
+}
+
+li {
+  list-style-type: none;
+}
