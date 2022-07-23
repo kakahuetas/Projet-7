@@ -1,0 +1,111 @@
+.Navheader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 19;
+  height: 40px;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.144);
+  border-bottom: 1px solid #e8e8e8;
+  transition: all 0.3s;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  img {
+    height: 32px;
+    max-height: 45px;
+    cursor: pointer;
+    &:hover {
+      -webkit-animation: jello 1s;
+      animation: jello 1s infinite;
+    }
+  }
+  .action {
+    position: fixed;
+    right: 30px;
+    .profil {
+      position: relative;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .profil_menu {
+      position: absolute;
+      top: 65px;
+      right: -15px;
+      padding: 10px 20px;
+      width: 200px;
+      box-sizing: 0 5px 25px rgba(0, 0, 0, 0.1);
+      border-radius: 15px;
+      transition: 0.5s;
+      background: white;
+      visibility: hidden;
+      opacity: 0;
+      h3 {
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+        padding: 10px 0;
+        line-height: 1.2em;
+        span {
+          font-size: 14px;
+          color: #cecece;
+        }
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        top: -5px;
+        right: 28px;
+        width: 20px;
+        height: 20px;
+        background: white;
+        transform: rotate(45deg);
+      }
+    }
+    ul li {
+      list-style: none;
+      padding: 10px 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: center;
+      a {
+        text-decoration: none;
+        color: #555;
+        transition: 0.5s;
+        font-size: 14px;
+        &:hover {
+          color: #fd2d01;
+        }
+      }
+    }
+    .active {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+  }
+}
+
+@keyframes jello {
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.1);
+  }
+  20% {
+    transform: scale(1);
+  }
+}

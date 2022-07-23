@@ -1,4 +1,5 @@
 import React from "react";
+import Loginform from "../components/Loginform";
 import Logo from "../components/Logo";
 
 const Login = () => {
@@ -22,6 +23,13 @@ const Login = () => {
               Entrer votre mail ainsi que votre mot de passe, pour accèder au
               réseau social de l'entreprise
             </p>
+            <div className="login_form_formulaire">
+              <Loginform />
+            </div>
+            <div className="login_form-signup">
+              <p>Vous n'avez pas de compte ?</p>
+              <a href="/signup">Inscription</a>
+            </div>
           </div>
         </div>
       </div>
