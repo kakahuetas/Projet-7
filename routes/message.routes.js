@@ -7,6 +7,7 @@ const multer = require("../middleware/multer-config");
 //Route messages
 router.get("/", multer, messageCtrl.getAllMessages);
 router.get("/:id", auth, multer, messageCtrl.getOneMessage);
+router.get("/profil/:id", auth, multer, messageCtrl.getAllUserMessage);
 
 //CRUD Messages
 router.post("/", auth, multer, messageCtrl.createMessage);

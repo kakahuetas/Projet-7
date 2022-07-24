@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { UserIdContext } from "../context/UserContext";
 import axios from "axios";
 
@@ -9,17 +9,19 @@ const ProfilEditMediaForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const media = new FormData();
-    media.append("selectedFile", selectedFile);
+    const formData = new FormData();
+    formData.append("media", selectedFile);
     try {
       const response = axios({
         method: "put",
         url: `${process.env.REACT_APP_API_URL}api/user/` + userId,
-        data: media,
+        data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      window.location.reload();
     }
   };
 

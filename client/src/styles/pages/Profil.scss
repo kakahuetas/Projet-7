@@ -8,17 +8,22 @@
     align-items: center;
     justify-content: space-between;
     padding: 30px 0;
+    position: relative;
     .profilUserBlock {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 0.8rem;
       position: relative;
+      width: 40%;
+      .profil_media_head_img {
+        position: relative;
+      }
       .editProfilMedia {
         position: absolute;
         border: none;
-        bottom: 10px;
-        right: -185px;
+        bottom: 0px;
+        left: 75px;
         background: #fd2d01;
         padding: 10px;
         border-radius: 50%;
@@ -33,8 +38,11 @@
         box-shadow: 0px 15px 32px rgba(0, 0, 0, 0.355) !important;
       }
       img {
+        position: relative;
+        object-fit: cover;
+        height: 150px;
+        width: 150px;
         border-radius: 50%;
-        width: 70%;
         box-shadow: 0px 15px 32px rgba(0, 0, 0, 0.182) !important;
       }
       .profil_name {
@@ -54,6 +62,9 @@
           text-transform: capitalize;
         }
       }
+    }
+    .profil_buttons {
+      width: 100%;
     }
     .editButton {
       width: 180px;
@@ -116,6 +127,7 @@
         border-radius: 10px;
         border: 1px solid #e8e8e8;
         border-bottom: 2px solid #e8e8e8;
+        width: 100%;
       }
     }
   }

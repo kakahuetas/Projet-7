@@ -59,7 +59,7 @@ exports.getOneMessage = async (req, res, next) => {
       .send({ message: "Le message n'a pas été trouvé ou supprimé" });
   else {
     MessageModel.Message.findOne({
-      attributes: ["id", "userId", "texte", "media", "likes", "createdAt"],
+      attributes: ["id", "userId", "texte", "media", "createdAt"],
       where: { id: req.params.id },
     })
       .then((message) => {
@@ -67,6 +67,18 @@ exports.getOneMessage = async (req, res, next) => {
       })
       .catch((error) => res.status(400).json({ error }));
   }
+};
+
+//Recupération de tous les messages d'un ID
+exports.getAllUserMessage = async (req, res, next) => {
+  MessageModel.Message.findAll({
+    attributes: ["id", "userId", "texte", "media", "createdAt"],
+    where: { userId: req.params.id },
+  })
+    .then((message) => {
+      res.status(200).send(message);
+    })
+    .catch((error) => res.status(400).json({ error }));
 };
 
 //Edition du message

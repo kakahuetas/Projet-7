@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Navigation from "../components/Navigation";
 import ProfilEdit from "../components/ProfilEdit";
 import ProfilEditMedia from "../components/ProfilEditMedia";
+import UserFeed from "../components/UserFeed";
 
 const Profil = () => {
   const navigate = useNavigate();
@@ -33,8 +34,9 @@ const Profil = () => {
       <div className="profilContainer">
         <div className="profilHeader">
           <div className="profilUserBlock">
-            <img src={user.media} alt="profil" />
-            <div className="editProfilMedia_head">
+            <div className="profil_media_head_img">
+              <img src={user.media} alt="profil" />
+
               <ProfilEditMedia />
             </div>
             <div className="profil_name">
@@ -69,7 +71,9 @@ const Profil = () => {
               <h4>Posts</h4>
             </div>
             <div className="post_">
-              <div className="allUserPosts"></div>
+              <div className="allUserPosts">
+                <UserFeed />
+              </div>
             </div>
           </div>
         </div>

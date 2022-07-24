@@ -1,0 +1,26 @@
+.feedContainer {
+  background: white;
+  width: 100%;
+  padding: 8px;
+  border-radius: 0.75rem;
+  border: 1px solid #e8e8e8;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.feedContainer .feedTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+.feedContainer .feedTitle .feedTitle_user {
+  flex: 2;
+  margin-left: 20px;
+}
+.feedContainer .feedTitle .feedTitle_edit {
+  flex: 3;
+  position: absolute;
+  top: 0;
+  right: 0;
+}/*# sourceMappingURL=userFeed.css.map */

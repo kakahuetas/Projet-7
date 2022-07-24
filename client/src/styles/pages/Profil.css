@@ -9,6 +9,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 30px 0;
+  position: relative;
 }
 .profilContainer .profilHeader .profilUserBlock {
   display: flex;
@@ -16,12 +17,16 @@
   align-items: center;
   gap: 0.8rem;
   position: relative;
+  width: 40%;
+}
+.profilContainer .profilHeader .profilUserBlock .profil_media_head_img {
+  position: relative;
 }
 .profilContainer .profilHeader .profilUserBlock .editProfilMedia {
   position: absolute;
   border: none;
-  bottom: 10px;
-  right: -185px;
+  bottom: 0px;
+  left: 75px;
   background: #fd2d01;
   padding: 10px;
   border-radius: 50%;
@@ -36,8 +41,12 @@
   box-shadow: 0px 15px 32px rgba(0, 0, 0, 0.355) !important;
 }
 .profilContainer .profilHeader .profilUserBlock img {
+  position: relative;
+  -o-object-fit: cover;
+     object-fit: cover;
+  height: 150px;
+  width: 150px;
   border-radius: 50%;
-  width: 70%;
   box-shadow: 0px 15px 32px rgba(0, 0, 0, 0.182) !important;
 }
 .profilContainer .profilHeader .profilUserBlock .profil_name {
@@ -56,6 +65,9 @@
   font-size: 0.9rem;
   color: #999;
   text-transform: capitalize;
+}
+.profilContainer .profilHeader .profil_buttons {
+  width: 100%;
 }
 .profilContainer .profilHeader .editButton {
   width: 180px;
@@ -119,4 +131,5 @@
   border-radius: 10px;
   border: 1px solid #e8e8e8;
   border-bottom: 2px solid #e8e8e8;
+  width: 100%;
 }/*# sourceMappingURL=Profil.css.map */
