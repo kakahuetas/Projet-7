@@ -43,4 +43,5 @@
   opacity: 1 !important;
   box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.405) !important;
   padding: 2rem;
+  z-index: 1;
 }/*# sourceMappingURL=profilEdit.css.map */

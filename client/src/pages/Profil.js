@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { UserIdContext } from "../context/UserContext";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navigation from "../components/Navigation";
 import ProfilEdit from "../components/ProfilEdit";
 import ProfilEditMedia from "../components/ProfilEditMedia";
 import UserFeed from "../components/UserFeed";
+import { useParams } from "react-router-dom";
 
 const Profil = () => {
   const navigate = useNavigate();
@@ -15,18 +15,19 @@ const Profil = () => {
     }
   }, [navigate]);
 
-  const userId = useContext(UserIdContext);
+  const { id } = useParams();
+
   const [user, setUser] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}api/user/` + userId)
+      .get(`${process.env.REACT_APP_API_URL}api/user/` + id)
       .then((result) => {
         setUser(result.data);
       })
 
       .catch((error) => console.log(error));
-  }, [userId]);
+  }, [id]);
 
   return (
     <>

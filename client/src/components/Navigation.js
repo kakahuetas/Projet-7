@@ -3,6 +3,8 @@ import { UserIdContext } from "../context/UserContext";
 import axios from "axios";
 import Logo from "./Logo";
 import Logout from "./Logout";
+import { Route, Link, Routes } from "react-router-dom";
+import Profil from "../pages/Profil";
 
 const menuToggle = () => {
   const toggleMenu = document.querySelector(".profil_menu");
@@ -24,7 +26,6 @@ const Navigation = () => {
       .catch((error) => console.log(error));
   }, [userId]);
 
-  console.log(user);
   return (
     <div className="Navheader">
       <div className="logo">
@@ -42,7 +43,7 @@ const Navigation = () => {
 
           <ul>
             <li>
-              <a href="/profil">Mon profil</a>
+              <Link to={`/profil/${user.id}`}>Mon profil</Link>
             </li>
             <Logout />
           </ul>

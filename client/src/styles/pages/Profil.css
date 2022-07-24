@@ -96,7 +96,7 @@
 }
 .profilContainer .body_bloc .left_bloc .user_head {
   background: white;
-  padding: 0.5rem;
+  padding: 1rem;
   border-radius: 10px;
   border: 1px solid #e8e8e8;
   border-bottom: 2px solid #e8e8e8;
@@ -127,9 +127,10 @@
 }
 .profilContainer .body_bloc .right_bloc .post_head {
   background: white;
-  padding: 0.5rem;
+  padding: 1rem;
   border-radius: 10px;
   border: 1px solid #e8e8e8;
   border-bottom: 2px solid #e8e8e8;
-  width: 100%;
+  width: 98%;
+  margin-bottom: 10px;
 }/*# sourceMappingURL=Profil.css.map */
