@@ -1,0 +1,122 @@
+.profilContainer {
+  padding: 60px 12px 15px;
+  transition: all 0.3s;
+  width: 80%;
+  margin: auto;
+}
+.profilContainer .profilHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 0;
+}
+.profilContainer .profilHeader .profilUserBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  position: relative;
+}
+.profilContainer .profilHeader .profilUserBlock .editProfilMedia {
+  position: absolute;
+  border: none;
+  bottom: 10px;
+  right: -185px;
+  background: #fd2d01;
+  padding: 10px;
+  border-radius: 50%;
+  height: 34px;
+  width: 34px;
+  color: white;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0px 15px 32px rgba(0, 0, 0, 0.355) !important;
+}
+.profilContainer .profilHeader .profilUserBlock img {
+  border-radius: 50%;
+  width: 70%;
+  box-shadow: 0px 15px 32px rgba(0, 0, 0, 0.182) !important;
+}
+.profilContainer .profilHeader .profilUserBlock .profil_name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.profilContainer .profilHeader .profilUserBlock .profil_name h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #393a4f;
+  line-height: 1.2;
+  text-transform: capitalize;
+}
+.profilContainer .profilHeader .profilUserBlock .profil_name h4 {
+  font-size: 0.9rem;
+  color: #999;
+  text-transform: capitalize;
+}
+.profilContainer .profilHeader .editButton {
+  width: 180px;
+  font-size: 0.9rem;
+  padding: 10px 22px;
+  background: #fcfcfc;
+  color: #999;
+  border-radius: 0.65rem;
+  transition: all 0.3s;
+  border: 1px solid #dbdbdb;
+  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.182) !important;
+  cursor: pointer;
+}
+.profilContainer .body_bloc {
+  display: flex;
+  gap: 2rem;
+}
+.profilContainer .body_bloc h4 {
+  padding: 0 6px;
+}
+.profilContainer .body_bloc .left_bloc {
+  width: 40%;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+.profilContainer .body_bloc .left_bloc .user_head {
+  background: white;
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid #e8e8e8;
+  border-bottom: 2px solid #e8e8e8;
+}
+.profilContainer .body_bloc .left_bloc .user_info-bloc {
+  background: white;
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid #e8e8e8;
+  border-bottom: 2px solid #e8e8e8;
+}
+.profilContainer .body_bloc .left_bloc .user_info-bloc .user_info-row {
+  border-bottom: 1px solid #e8e8e8;
+  padding: 10px 6px;
+}
+.profilContainer .body_bloc .left_bloc .user_info-bloc .user_info-row span {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #393a4f;
+}
+.profilContainer .body_bloc .left_bloc .user_info-bloc .user_info-row p {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #999;
+}
+.profilContainer .body_bloc .right_bloc {
+  width: 100%;
+}
+.profilContainer .body_bloc .right_bloc .post_head {
+  background: white;
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid #e8e8e8;
+  border-bottom: 2px solid #e8e8e8;
+}/*# sourceMappingURL=Profil.css.map */

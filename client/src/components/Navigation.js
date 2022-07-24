@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { UserIdContext } from "../context/UserContext";
+import axios from "axios";
 import Logo from "./Logo";
-import Picture from "../asset/vegeta.jpg";
 import Logout from "./Logout";
 
 const menuToggle = () => {
@@ -9,6 +10,21 @@ const menuToggle = () => {
 };
 
 const Navigation = () => {
+  const userId = useContext(UserIdContext);
+
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}api/user/` + userId)
+      .then((result) => {
+        setUser(result.data);
+      })
+
+      .catch((error) => console.log(error));
+  }, [userId]);
+
+  console.log(user);
   return (
     <div className="Navheader">
       <div className="logo">
@@ -16,12 +32,12 @@ const Navigation = () => {
       </div>
       <div className="action">
         <div className="profil" onClick={menuToggle}>
-          <img src={Picture} alt="profil" />
+          <img src={user.media} alt="profil" />
         </div>
         <div className="profil_menu">
           <h3>
-            Prenom <br />
-            <span>Service</span>
+            {user.firstname} <br />
+            <span> {user.service}</span>
           </h3>
 
           <ul>

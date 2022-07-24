@@ -52,7 +52,7 @@ exports.login = (req, res, next) => {
                   message: "Vous êtes connecté",
                   userId: user.id,
                   token: jwt.sign({ userId: user.id }, "RANDOM_TOKEN_SECRET", {
-                    expiresIn: "24h",
+                    expiresIn: "12h",
                   }),
                 })
               );

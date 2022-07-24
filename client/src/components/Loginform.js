@@ -1,40 +1,31 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Loginform = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const emailError = document.querySelector(".email-error");
-    const passwordError = document.querySelector(".password-error");
-    if (!email || !password) {
-      alert("veuillez remplir tous les champs du formulaire");
-    } else {
-      axios({
-        method: "post",
-        url: `${process.env.REACT_APP_API_URL}api/user/login`,
-        withcredentials: false,
-        data: {
-          email,
-          password,
-        },
+
+    axios({
+      method: "post",
+      url: `${process.env.REACT_APP_API_URL}api/user/login`,
+      data: {
+        email,
+        password,
+      },
+    })
+      .then((result) => {
+        console.log(result.data);
+        localStorage.token = result.data.token;
+        axios.defaults.headers.common.Authorization =
+          "Bearer " + result.data.token;
+        navigate("/");
       })
-        .then((res) => {
-          console.log(res);
-          if (res.data.error) {
-            emailError.innerHTML = res.data.error;
-            passwordError.innerHTML = res.data.error.password;
-          } else {
-            window.location = "/";
-            localStorage.token = res.data.token;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+      .catch((error) => console.log(error));
   };
 
   return (

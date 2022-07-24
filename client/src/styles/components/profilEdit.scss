@@ -1,0 +1,45 @@
+.action_edit {
+  position: fixed;
+  right: 90px;
+  .profil_menu_edit {
+    position: absolute;
+    top: 0px;
+    right: 220px;
+    padding: 10px 20px;
+    width: 500px;
+    box-sizing: 0 5px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    transition: 0.5s;
+    background: white;
+    visibility: hidden;
+    opacity: 0;
+    h3 {
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      padding: 10px 0;
+      line-height: 1.2em;
+      text-transform: capitalize;
+      span {
+        font-size: 14px;
+        color: #cecece;
+      }
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      right: -5px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      transform: rotate(45deg);
+    }
+  }
+  .active_edit {
+    visibility: visible !important;
+    opacity: 1 !important;
+    box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.405) !important;
+    padding: 2rem;
+  }
+}

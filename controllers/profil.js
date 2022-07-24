@@ -15,7 +15,6 @@ exports.getAllUsers = async (req, res, next) => {
       "media",
       "isAdmin",
     ],
-    where: { id: req.auth.userId },
   })
     .then((user) => {
       res.status(200).send(user);
@@ -53,12 +52,14 @@ exports.userInfo = async (req, res, next) => {
 
 //Update un profil
 exports.updateUser = async (req, res, next) => {
-  const user = req.auth.userId + "";
+  const user = req.params.id + "";
 
-  UserModel.User.findOne({ where: { id: req.auth.userId } }).then((users) => {
+  UserModel.User.findOne({ where: { id: req.params.id } }).then((users) => {
     console.log(req.params.id, user, users.isAdmin);
     if (
-      (user === req.params.id && req.file != undefined) ||
+      (user === req.params.id &&
+        req.file != undefined &&
+        req.body.password != undefined) ||
       (users.isAdmin === true && req.file != undefined)
     ) {
       bcrypt.hash(req.body.password, 10).then((hash) => {
@@ -99,6 +100,21 @@ exports.updateUser = async (req, res, next) => {
             res.status(200).json({ message: "Profil modifié" });
           })
           .catch((error) => res.status(501).json({ message: error }));
+      });
+    } else if (
+      (user === req.params.id && req.file != undefined) ||
+      (users.isAdmin === true && req.file != undefined)
+    ) {
+      console.log("je suis ici");
+      UserModel.User.update(
+        {
+          media: `${req.protocol}://${req.get("host")}/images/upload/${
+            req.file.filename
+          }`,
+        },
+        { where: { id: req.params.id } }
+      ).then(() => {
+        res.status(200).json({ message: "Profil modifié" });
       });
     } else {
       return res.status(404).send({ message: "Non authorisé" });

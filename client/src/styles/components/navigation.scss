@@ -17,10 +17,6 @@
     height: 32px;
     max-height: 45px;
     cursor: pointer;
-    &:hover {
-      -webkit-animation: jello 1s;
-      animation: jello 1s infinite;
-    }
   }
   .action {
     position: fixed;
@@ -59,6 +55,7 @@
         font-size: 16px;
         padding: 10px 0;
         line-height: 1.2em;
+        text-transform: capitalize;
         span {
           font-size: 14px;
           color: #cecece;
@@ -95,17 +92,5 @@
       visibility: visible !important;
       opacity: 1 !important;
     }
-  }
-}
-
-@keyframes jello {
-  0% {
-    transform: scale(1);
-  }
-  10% {
-    transform: scale(1.1);
-  }
-  20% {
-    transform: scale(1);
   }
 }

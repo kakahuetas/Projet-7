@@ -1,46 +1,28 @@
-import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import Home from "./pages/Home";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import { useDispatch } from "react-redux";
-import { getUser } from "./actions/user.action";
+import { useEffect, useState } from "react";
+import { UserIdContext } from "./context/UserContext";
+import Routes from "./components/Routes";
+import jwtdecode from "jwt-decode";
 
 const App = () => {
-  // axios.defaults.headers.common["Authorization"] =
-  //   "Token " + localStorage.token;
-  // console.log(axios.defaults.headers.common["Authorization"]);
-  const [uid, setUid] = React.useState(null);
-  const dispatch = useDispatch();
-  const id = localStorage.getItem("token");
-  console.log(id);
-  useEffect(() => {
-    const token = async () => {
-      await axios({
-        method: "get",
-        url: `${process.env.REACT_APP_API_URL}api/user/4`,
-        withcredentials: false,
-      })
-        .then((res) => {
-          setUid(res.data);
-        })
-        .catch((err) => console.log("No Token", err));
-    };
-    token();
-    if (uid) dispatch(getUser(uid));
-  }, [uid, dispatch]);
+  const [userId, setUserId] = useState(null);
 
+  useEffect(() => {
+    const token = window.localStorage.getItem("token");
+
+    if (token === null) {
+      console.log("No token, no userId");
+    } else {
+      console.log(token);
+      const decodeToken = jwtdecode(token);
+      const userToken = decodeToken.userId;
+      setUserId(userToken);
+      console.log("userId:", userToken);
+    }
+  }, []);
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        {/* Si l'url ne renvoi a rien on renvoi par defaut home */}
-        <Route path="*" element={<Home />} />{" "}
-      </Routes>
-    </BrowserRouter>
+    <UserIdContext.Provider value={userId}>
+      <Routes />
+    </UserIdContext.Provider>
   );
 };
 

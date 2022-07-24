@@ -5,7 +5,7 @@ const messageCtrl = require("../controllers/message");
 const multer = require("../middleware/multer-config");
 
 //Route messages
-router.get("/", auth, multer, messageCtrl.getAllMessages);
+router.get("/", multer, messageCtrl.getAllMessages);
 router.get("/:id", auth, multer, messageCtrl.getOneMessage);
 
 //CRUD Messages

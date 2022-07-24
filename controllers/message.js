@@ -42,7 +42,7 @@ exports.createMessage = (req, res, next) => {
 //Recupération de tous les messages
 exports.getAllMessages = async (req, res, next) => {
   MessageModel.Message.findAll({
-    attributes: ["id", "userId", "texte", "likes", "media", "createdAt"],
+    attributes: ["id", "userId", "texte", "media", "createdAt"],
   })
     .then((message) => {
       res.status(200).send(message);

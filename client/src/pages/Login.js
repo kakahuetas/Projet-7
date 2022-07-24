@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Loginform from "../components/Loginform";
 import Logo from "../components/Logo";
 
 const Login = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (localStorage.token) {
+      navigate("/");
+    }
+  }, [navigate]);
   return (
     <div className="loginpage">
       <div className="circle">

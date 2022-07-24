@@ -1,0 +1,25 @@
+form {
+  display: flex;
+  flex-direction: column;
+  margin-top: -0.5rem;
+}
+form input {
+  display: block;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #555770;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+form input.submit {
+  background: #4e5166;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  border: 1px solid transparent;
+  color: white;
+  cursor: pointer;
+}/*# sourceMappingURL=loginform.css.map */

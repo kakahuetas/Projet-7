@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "../components/Navigation";
 
@@ -9,11 +10,12 @@ const Home = () => {
       navigate("/login");
     }
   }, [navigate]);
+
   return (
     <>
       <Navigation />
       <div className="bodyContainer">
-        <h1>je suis a l'accueil une fois connecter</h1>
+        <h1>Affichage des post</h1> <br />
       </div>
     </>
   );

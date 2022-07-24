@@ -1,0 +1,151 @@
+.signup-page {
+  height: 100vh;
+  width: 100%;
+}
+
+.circle {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  margin: 0 auto;
+  padding: 0 auto;
+  overflow: hidden;
+}
+.circle .circle-small {
+  -webkit-animation: pulsate-bck 3s ease-in-out infinite both;
+  animation: pulsate-bck 3s ease-in-out infinite both;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+  position: absolute;
+  top: 12.5rem;
+  left: -9.375rem;
+  background: #fff;
+  width: 18.75rem;
+  height: 18.75rem;
+  border-radius: 50rem;
+  opacity: 0.4;
+}
+.circle .circle-medium {
+  -webkit-animation: pulsate-bck 3s ease-in-out infinite both;
+  animation: pulsate-bck 3s ease-in-out infinite both;
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
+  position: absolute;
+  top: 3.125rem;
+  left: -18.75rem;
+  background: #fff;
+  width: 37.5rem;
+  height: 37.5rem;
+  border-radius: 50rem;
+  opacity: 0.3;
+}
+.circle .circle-large {
+  -webkit-animation: pulsate-bck 3s ease-in-out infinite both;
+  animation: pulsate-bck 3s ease-in-out infinite both;
+  -webkit-animation-delay: 0.6s;
+  animation-delay: 0.6s;
+  position: absolute;
+  top: -6.25rem;
+  left: -28.125rem;
+  background: #fff;
+  width: 56.25rem;
+  height: 56.25rem;
+  border-radius: 50rem;
+  opacity: 0.2;
+}
+.circle .circle-xlarge {
+  -webkit-animation: pulsate-bck 3s ease-in-out infinite both;
+  animation: pulsate-bck 3s ease-in-out infinite both;
+  -webkit-animation-delay: 0.9s;
+  animation-delay: 0.9s;
+  position: absolute;
+  top: -15.625rem;
+  left: -37.5rem;
+  background: #fff;
+  width: 75rem;
+  height: 75rem;
+  border-radius: 50rem;
+  opacity: 0.1;
+}
+
+.container {
+  max-width: 62.5rem;
+  display: flex;
+  margin: auto;
+  font-family: Poppins, sans-serif;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.container .container_left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  padding: 6.25rem;
+  background: transparent;
+}
+.container .container_left img {
+  width: 100%;
+}
+.container .container_left p {
+  color: grey;
+  text-align: center;
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+}
+.container .container_right {
+  background: white;
+  height: 100vh;
+  width: 100%;
+}
+.container .container_right .login_form {
+  padding: 3.75rem;
+}
+.container .container_right .login_form p {
+  margin-bottom: 2rem;
+}
+.container .container_right .login_form h1 {
+  margin-bottom: 2rem;
+}
+.container .container_right .login_form .login_form-signup {
+  border-top: 1px solid #f1f1f1;
+  margin-top: 1.875rem;
+  padding-top: 1.25rem;
+  display: flex;
+  justify-content: flex-start;
+}
+.container .container_right .login_form .login_form-signup a {
+  font-size: 0.8rem;
+  margin-left: 1rem;
+}
+.container .container_right .login_form .login_form-signup p {
+  font-size: 0.8rem;
+}
+
+@-webkit-keyframes pulsate-bck {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulsate-bck {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}/*# sourceMappingURL=login.css.map */
