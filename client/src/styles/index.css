@@ -7,4 +7,5 @@
 @import url("./pages/Profil.scss");
 @import url("./components/profilEdit.scss");
 @import url("./components/profilEditMedia.scss");
-@import url("./components/userFeed.scss");/*# sourceMappingURL=index.css.map */
+@import url("./components/userFeed.scss");
+@import url("./components/profilDelete.scss");/*# sourceMappingURL=index.css.map */

@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { UserIdContext } from "../context/UserContext";
+import React from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const ProfilEditMediaForm = () => {
-  const userId = useContext(UserIdContext);
+  const { id } = useParams();
 
   const [selectedFile, setSelectedFile] = React.useState(null);
 
@@ -12,9 +12,9 @@ const ProfilEditMediaForm = () => {
     const formData = new FormData();
     formData.append("media", selectedFile);
     try {
-      const response = axios({
+      axios({
         method: "put",
-        url: `${process.env.REACT_APP_API_URL}api/user/` + userId,
+        url: `${process.env.REACT_APP_API_URL}api/user/` + id,
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });

@@ -6,27 +6,35 @@ import ProfilEdit from "../components/ProfilEdit";
 import ProfilEditMedia from "../components/ProfilEditMedia";
 import UserFeed from "../components/UserFeed";
 import { useParams } from "react-router-dom";
+import ProfilDelete from "../components/ProfilDelete";
 
 const Profil = () => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!localStorage.token) {
-      navigate("/login");
-    }
-  }, [navigate]);
-
   const { id } = useParams();
-
+  const navigate = useNavigate();
   const [user, setUser] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}api/user/` + id)
-      .then((result) => {
-        setUser(result.data);
-      })
+  if (user.id === undefined) {
+    console.log("Aucun utilisateur sous cet id");
+    navigate("/");
+  }
 
-      .catch((error) => console.log(error));
+  const userinfo = async () => {
+    if (!localStorage.token) {
+      navigate("/login");
+    } else {
+      await axios
+        .get(`${process.env.REACT_APP_API_URL}api/user/` + id)
+        .then((result) => {
+          console.log(result.data);
+          setUser(result.data);
+        })
+
+        .catch((error) => console.log(error));
+    }
+  };
+
+  useEffect(() => {
+    userinfo();
   }, [id]);
 
   return (
@@ -64,6 +72,11 @@ const Profil = () => {
               <div className="user_info-row">
                 <span>Service</span>
                 <p>{user.service}</p>
+              </div>
+              <div className="user_info-row">
+                <div className="profil_delete_buttons">
+                  <ProfilDelete />
+                </div>
               </div>
             </div>
           </div>

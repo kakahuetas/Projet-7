@@ -1,4 +1,5 @@
 const UserModel = require("../models/user.models");
+const MessageModel = require("../models/message.model");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 
@@ -60,7 +61,9 @@ exports.updateUser = async (req, res, next) => {
       (user === req.params.id &&
         req.file != undefined &&
         req.body.password != undefined) ||
-      (users.isAdmin === true && req.file != undefined)
+      (users.isAdmin === true &&
+        req.file != undefined &&
+        req.body.password != undefined)
     ) {
       bcrypt.hash(req.body.password, 10).then((hash) => {
         UserModel.User.update(
@@ -105,7 +108,6 @@ exports.updateUser = async (req, res, next) => {
       (user === req.params.id && req.file != undefined) ||
       (users.isAdmin === true && req.file != undefined)
     ) {
-      console.log("je suis ici");
       UserModel.User.update(
         {
           media: `${req.protocol}://${req.get("host")}/images/upload/${
@@ -123,6 +125,31 @@ exports.updateUser = async (req, res, next) => {
 };
 
 //Supprimer un profil
+// exports.deleteUser = (req, res, next) => {
+//   const user = req.auth.userId + "";
+//   const selectedUser = req.params.id;
+
+//   UserModel.User.findOne({ where: { id: req.auth.userId } }).then((users) => {
+//     if (user === selectedUser || users.isAdmin === true) {
+//       UserModel.User.findOne({ where: { id: req.params.id } }).then(
+//         (profil) => {
+//           const filename = profil.media.split("/images/upload/")[1];
+//           fs.unlink(`images/upload/${filename}`, () => {
+//             UserModel.User.destroy({ where: { id: req.params.id } })
+//               .then(() => {
+//                 res.status(200).json({ message: "Profil supprimé" });
+//               })
+//               .catch((error) => res.status(501).json({ message: error }));
+//           });
+//         }
+//       );
+//     } else {
+//       return res.status(404).send({ message: "Non autorisé" });
+//     }
+//   });
+// };
+
+//Supprimer un profil
 exports.deleteUser = (req, res, next) => {
   const user = req.auth.userId + "";
   const selectedUser = req.params.id;
@@ -131,14 +158,28 @@ exports.deleteUser = (req, res, next) => {
     if (user === selectedUser || users.isAdmin === true) {
       UserModel.User.findOne({ where: { id: req.params.id } }).then(
         (profil) => {
-          const filename = profil.media.split("/images/upload/")[1];
-          fs.unlink(`images/upload/${filename}`, () => {
-            UserModel.User.destroy({ where: { id: req.params.id } })
+          if (profil != null) {
+            MessageModel.Message.findAll({
+              where: { id: req.params.id },
+            })
               .then(() => {
-                res.status(200).json({ message: "Profil supprimé" });
+                MessageModel.Message.destroy({
+                  where: { userId: req.params.id },
+                });
+                console.log("Tous les posts de cet user ont été supprimé");
+                //Suppression de l'utilisateur
+
+                const filename = profil.media.split("/images/upload/")[1];
+                fs.unlink(`images/upload/${filename}`, () => {
+                  UserModel.User.destroy({ where: { id: req.params.id } })
+                    .then(() => {
+                      res.status(200).json({ message: "Profil supprimé" });
+                    })
+                    .catch((error) => res.status(501).json({ message: error }));
+                });
               })
-              .catch((error) => res.status(501).json({ message: error }));
-          });
+              .catch((err) => res.status(500).json(err));
+          }
         }
       );
     } else {

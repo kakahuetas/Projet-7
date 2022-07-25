@@ -8,7 +8,7 @@ const UserFeed = () => {
   const [message, setMessage] = useState([]);
   const [user, setUser] = useState([]);
 
-  useEffect(() => {
+  const userinfo = async () => {
     axios
       .get(`${process.env.REACT_APP_API_URL}api/user/` + id)
       .then((result) => {
@@ -16,16 +16,21 @@ const UserFeed = () => {
       })
 
       .catch((error) => console.log(error));
-  }, [id]);
+  };
 
-  useEffect(() => {
-    axios
+  const userMessage = async () => {
+    await axios
       .get(`${process.env.REACT_APP_API_URL}api/message/profil/` + id)
       .then((result) => {
         setMessage(result.data);
         console.log(result.data);
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    userinfo();
+    userMessage();
+  }, [id]);
 
   if (message.length === 0)
     return (
@@ -49,7 +54,7 @@ const UserFeed = () => {
         {message.length &&
           message.map((message, index) => {
             return (
-              <div className="feedContainer">
+              <div className="feedContainer" key={message.id}>
                 <div className="feedTitle">
                   <div className="feedTitle_img">
                     <img src={user.media} alt="profil" />

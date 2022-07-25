@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
-import { UserIdContext } from "../context/UserContext";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const ProfilEditForm = () => {
-  const userId = useContext(UserIdContext);
+  const { id } = useParams();
 
   const [firstname, setFirstName] = useState("");
   const [name, setName] = useState("");
@@ -23,7 +23,7 @@ const ProfilEditForm = () => {
     } else {
       axios({
         method: "put",
-        url: `${process.env.REACT_APP_API_URL}api/user/` + userId,
+        url: `${process.env.REACT_APP_API_URL}api/user/` + id,
         credentials: "include",
         data: {
           firstname,
@@ -42,7 +42,7 @@ const ProfilEditForm = () => {
             passwordError.innerHTML = res.data.passwordError;
             serviceError.innerHTML = res.data.serviceError;
           } else {
-            window.location = "/";
+            window.location.reload();
           }
         })
         .catch((err) => {

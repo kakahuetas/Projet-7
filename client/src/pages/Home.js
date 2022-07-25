@@ -1,16 +1,7 @@
-import { useEffect } from "react";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import Navigation from "../components/Navigation";
 
 const Home = () => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!localStorage.token) {
-      navigate("/login");
-    }
-  }, [navigate]);
-
   return (
     <>
       <Navigation />

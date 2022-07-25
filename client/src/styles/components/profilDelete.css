@@ -1,0 +1,59 @@
+.deleteButton {
+  width: 100%;
+  font-size: 0.9rem;
+  padding: 10px 22px;
+  background: #fd2d01;
+  color: #fff;
+  border-radius: 0.65rem;
+  transition: all 0.3s;
+  border: 1px solid #dbdbdb;
+  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.203) !important;
+  cursor: pointer;
+}
+
+.action_delete .profil_menu_delete {
+  position: absolute;
+  bottom: 39px;
+  left: 350px;
+  padding: 10px 20px;
+  width: 240px;
+  box-shadow: 0 5px 25px rgba(220, 11, 11, 0.405);
+  border-radius: 15px;
+  transition: 0.5s;
+  background: #e72901;
+  visibility: hidden;
+  opacity: 0;
+  color: white;
+  z-index: 1;
+}
+.action_delete .profil_menu_delete h3 {
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  padding: 10px 0;
+  line-height: 1.2em;
+  text-transform: capitalize;
+}
+.action_delete .profil_menu_delete h3 span {
+  font-size: 14px;
+  color: #cecece;
+}
+.action_delete .profil_menu_delete::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: -5px;
+  width: 20px;
+  height: 20px;
+  background: #e72901;
+  transform: rotate(45deg);
+}
+.action_delete .active_delete {
+  visibility: visible !important;
+  opacity: 1 !important;
+  box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.405) !important;
+  padding: 2rem;
+}
+.action_delete label.warning {
+  text-align: center;
+}/*# sourceMappingURL=profilDelete.css.map */

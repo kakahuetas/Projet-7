@@ -3,8 +3,7 @@ import { UserIdContext } from "../context/UserContext";
 import axios from "axios";
 import Logo from "./Logo";
 import Logout from "./Logout";
-import { Route, Link, Routes } from "react-router-dom";
-import Profil from "../pages/Profil";
+import { Link, useNavigate } from "react-router-dom";
 
 const menuToggle = () => {
   const toggleMenu = document.querySelector(".profil_menu");
@@ -13,17 +12,25 @@ const menuToggle = () => {
 
 const Navigation = () => {
   const userId = useContext(UserIdContext);
-
   const [user, setUser] = useState([]);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    axios
+  const userinfo = async () => {
+    if (!localStorage.token) {
+      navigate("/login");
+    }
+    await axios
       .get(`${process.env.REACT_APP_API_URL}api/user/` + userId)
       .then((result) => {
+        console.log(result.data);
         setUser(result.data);
       })
 
       .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    userinfo();
   }, [userId]);
 
   return (
